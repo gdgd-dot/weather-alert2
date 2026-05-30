@@ -4,6 +4,8 @@ from datetime import datetime
 
 KAKAO_ACCESS_TOKEN = os.environ.get("KAKAO_ACCESS_TOKEN")
 KAKAO_REFRESH_TOKEN = os.environ.get("KAKAO_REFRESH_TOKEN")
+KAKAO_REST_API_KEY = os.environ.get("KAKAO_REST_API_KEY")
+KAKAO_CLIENT_SECRET = os.environ.get("KAKAO_CLIENT_SECRET")
 WEATHER_API_KEY = os.environ.get("WEATHER_API_KEY")
 AIR_API_KEY = os.environ.get("AIR_API_KEY")
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
@@ -13,8 +15,9 @@ def refresh_kakao_token():
     url = "https://kauth.kakao.com/oauth/token"
     data = {
         "grant_type": "refresh_token",
-        "client_id": os.environ.get("KAKAO_REST_API_KEY"),
-        "refresh_token": KAKAO_REFRESH_TOKEN
+        "client_id": KAKAO_REST_API_KEY,
+        "refresh_token": KAKAO_REFRESH_TOKEN,
+        "client_secret": KAKAO_CLIENT_SECRET
     }
     res = requests.post(url, data=data)
     result = res.json()
@@ -28,11 +31,6 @@ def refresh_kakao_token():
     return new_access_token
 
 def update_github_secret(secret_name, secret_value):
-    import base64
-    from cryptography.hazmat.primitives.asymmetric.padding import OAEP
-    from cryptography.hazmat.primitives.asymmetric.padding import MGF1
-    from cryptography.hazmat.primitives import hashes
-    from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PublicKey
     import nacl.encoding
     import nacl.public
     headers = {
